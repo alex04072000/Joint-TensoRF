@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Joint-TensoRF</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:image" content="https://reconfusion.github.io/img/overview_combined.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1711">
+    <meta property="og:image:height" content="576">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://reconfusion.github.io/"/>
+    <meta property="og:title" content="ReconFusion: 3D Reconstruction with Diffusion Priors" />
+    <meta property="og:description" content="3D reconstruction methods such as Neural Radiance Fields (NeRFs) excel at rendering photorealistic novel views of complex scenes. However, recovering a high-quality NeRF typically requires tens to hundreds of input images, resulting in a time-consuming capture process. We present ReconFusion to reconstruct real-world scenes using only a few photos. Our approach leverages a diffusion prior for novel view synthesis, trained on synthetic and multiview datasets, which regularizes a NeRF-based 3D reconstruction pipeline at novel camera poses beyond those captured by the set of input images. Our method synthesizes realistic geometry and texture in underconstrained regions while preserving the appearance of observed regions. We perform an extensive evaluation across various real-world datasets, including forward-facing and 360-degree scenes, demonstrating significant performance improvements over previous few-view NeRF reconstruction approaches."/>
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ReconFusion: 3D Reconstruction with Diffusion Priors" />
+    <meta name="twitter:description" content="3D reconstruction methods such as Neural Radiance Fields (NeRFs) excel at rendering photorealistic novel views of complex scenes. However, recovering a high-quality NeRF typically requires tens to hundreds of input images, resulting in a time-consuming capture process. We present ReconFusion to reconstruct real-world scenes using only a few photos. Our approach leverages a diffusion prior for novel view synthesis, trained on synthetic and multiview datasets, which regularizes a NeRF-based 3D reconstruction pipeline at novel camera poses beyond those captured by the set of input images. Our method synthesizes realistic geometry and texture in underconstrained regions while preserving the appearance of observed regions. We perform an extensive evaluation across various real-world datasets, including forward-facing and 360-degree scenes, demonstrating significant performance improvements over previous few-view NeRF reconstruction approaches."/>
+    <meta name="twitter:image" content="https://reconfusion.github.io/img/overview_combined.png" />
+
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="css/fontawesome.all.min.css">
+	<link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+
+	<!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8ZERS5BVPS"></script>
+  <script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'G-8ZERS5BVPS');
+  </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+	<script defer src="js/fontawesome.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/synced_video_selector.js"></script>
+
+</head>
+
+<body style="padding: 5%; width: 100%">
+    <div class="container-lg text-center" style="max-width: 1500px; margin: auto;" id="main">
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                <b>Joint-TensoRF</b>:</br>Improving Robustness for Joint Optimization of Camera Poses</br>and Decomposed Low-Rank Tensorial Radiance Fields</br> 
+                <small>
+                AAAI 2024
+                </small>
+            </h2>
+        </div>
+        <div class="row text-center">
+<div class="col-md-3">
+    </div>
+            <div class="col-md-6 text-center">
+                <ul class="list-inline">
+                    <li>
+                        <a href="">
+                            Bo-Yu Cheng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://walonchiu.github.io/">
+                            Wei-Chen Chiu
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://yulunalexliu.github.io/">
+                            Yu-Lun Liu
+                        </a>
+                    </li>
+                </ul>
+            </div>
+<div class="col-md-3">
+    </div>
+            <div class="col-md-12 text-center">
+                National Yang Ming Chiao Tung University
+
+            </div> </div>
+
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 text-center">
+                    <ul class="nav nav-pills nav-justified">
+                        <li>
+                            <a href="">
+                            <image src="img/paper_aaai.jpg" height="60px">
+                                <h4><strong>Paper</strong></h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                            <image src="img/youtube_icon.png" height="60px">
+                                <h4><strong>Video</strong></h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                            <image src="img/github.png" height="60px">
+                                <h4><strong>Code (coming soon)</strong></h4>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+        </div>
+
+        <!-- <div class="row text-center">
+					
+			     <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+			</div> -->
+
+
+
+        <!-- <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <video id="teaser-video-ours" width="100%" autoplay loop muted controls>
+                  <source src="videos/teaser/wipe_4.mp4" type="video/mp4" />
+                </video>
+			</div>
+        </div> -->
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Abstract
+                </h3>
+                <p class="text-justify">
+                    In this paper, we propose an algorithm that allows joint refinement of camera pose and scene geometry represented by decomposed low-rank tensor, using only 2D images as supervision. First, we conduct a pilot study based on a 1D signal and relate our findings to 3D scenarios, where the naive joint pose optimization on voxel-based NeRFs can easily lead to sub-optimal solutions. Moreover, based on the analysis of the frequency spectrum, we propose to apply convolutional Gaussian filters on 2D and 3D radiance fields for a coarse-to-fine training schedule that enables joint camera pose optimization. Leveraging the decomposition property in decomposed low-rank tensor, our method achieves an equivalent effect to brute-force 3D convolution with only incurring little computational overhead. To further improve the robustness and stability of joint optimization, we also propose techniques of smoothed 2D supervision, randomly scaled kernel parameters, and edge-guided loss mask. Extensive quantitative and qualitative evaluations demonstrate that our proposed framework achieves superior performance in novel view synthesis as well as rapid convergence for optimization.
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                  Robust joint pose refinement on decomposed tensor
+				  <!-- <b> <font color="#118ab2">Recon</font><font color="#ef486e">Fusion</font></b> = <font color="#118ab2">3D Reconstruction</font>  + <font color="#ef486e">Diffusion Prior</font> -->
+                </h3>
+                <image src="img/Teaser_Version2.jpg" width=75% style="display: block; margin: auto;"></image>
+                <p class="text-justify">
+                    Robust joint pose refinement on decomposed tensor. Our method enables joint optimization of <b><font color="#0000ff">camera poses</font></b> and <b><font color="#ffbf00">decomposed voxel representation</font></b> by applying efficient <em>separable component-wise convolution</em> of <b><font color="#ff0000">Gaussian filters</font></b> on 3D tensor volume and 2D supervision images.
+                </p>
+            </div>
+        </div><br><br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Comparison of naive joint pose optimization and our proposed method on voxel-based NeRFs
+				  <!-- <b> <font color="#118ab2">Recon</font><font color="#ef486e">Fusion</font></b> = <font color="#118ab2">3D Reconstruction</font>  + <font color="#ef486e">Diffusion Prior</font> -->
+                </h3>
+                <image src="img/fig2_Version5.jpg" width=90% style="display: block; margin: auto;"></image>
+                <p class="text-justify">
+                    (a) Naively applying joint optimization on voxel-based NeRFs leads to dramatic failure as premature high-frequency signals in the voxel volume would curse the camera poses to stuck in local minima. (b) We propose a computationally effective manner to directly control the spectrum of the radiance field by performing <em>separable component-wise convolution</em> of Gaussian filters on the decomposed tensor. The proposed training scheme allows the joint optimization to converge successfully to a better solution.
+                </p>
+            </div>
+        </div><br><br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Qualitative comparisons of the 2D image patch alignment
+				  <!-- <b> <font color="#118ab2">Recon</font><font color="#ef486e">Fusion</font></b> = <font color="#118ab2">3D Reconstruction</font>  + <font color="#ef486e">Diffusion Prior</font> -->
+                </h3>
+                <image src="img/2D_Planar_Qualitative_LargeText.jpg" width=90% style="display: block; margin: auto;"></image>
+                <p class="text-justify">
+                    <em>2D TensoRF + 2D Gaussian</em> successfully registers accurate warping parameters, verifying the analysis of Gaussian filtering on joint optimization.
+                </p>
+            </div>
+        </div><br><br>
+
+
+	<!-- <div class="row">
+		<div class="col-md-8 col-md-offset-2">
+		<h3> ReconFusion enables high-quality 3D reconstruction from few views</h3><br>
+                <video id="co3d-grid" width="100%" autoplay loop muted controls>
+                  <source src="videos/results/co3d_3x5.mp4" type="video/mp4" />
+                </video>
+                <br>
+                    <p class="text-justify" style="text-align: center;">ReconFusion generalizes to everyday scenes: the same diffusion model prior is used for <b>all</b> reconstruction results.</p>
+			</div>
+        </div> -->
+
+
+        <br>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Visual comparisons of novel view synthesis
+                </h3><br>
+
+                <!-- <div class="text-center ">
+                    <ul class="nav nav-pills center-pills">
+                        <li class="method-pill active" data-value="zipnerf"
+                            onclick="selectCompVideo(this, activeScenePill)"><a>Zip-NeRF</a></li>
+                        <li class="method-pill" data-value="diffusionerf"
+                            onclick="selectCompVideo(this, activeScenePill)"><a>DiffusioNeRF</a></li>
+                    </ul>
+                    <ul class="nav nav-pills center-pills">
+                        <li class="method-pill" data-value="freenerf"
+                            onclick="selectCompVideo(this, activeScenePill)"><a>FreeNeRF</a></li>
+                        <li class="method-pill" data-value="simplenerf"
+                            onclick="selectCompVideo(this, activeScenePill)"><a>SimpleNeRF</a></li>
+                        <li class="method-pill" data-value="zeronvs"
+                            onclick="selectCompVideo(this, activeScenePill)"><a>ZeroNVS</a></li>
+                    </ul>
+                </div> -->
+
+                <script>
+                    // activeMethodPill = document.querySelector('.method-pill.active-pill');
+                    activeScenePill = document.querySelector('.scene-pill.active-pill');
+                    // activeModePill = document.querySelector('.mode-pill.active-pill');
+                </script>
+                
+                <div class="text-center">
+                    <div class="video-container">
+                        <video class="video" style="max-width: 90%;" m id="compVideo0" loop playsinline autoplay muted>
+                            <source src="videos/LLFF_Fern_Demo_Compressed.mp4" />
+                        </video>
+                        <video class="video" style="max-width: 90%;" id="compVideo1" loop playsinline autoplay muted hidden>
+                            <source src="videos/LLFF_Fern_Demo_Compressed.mp4" />
+                        </video>
+                    </div>
+                    <!-- <div class="text-center" style="color: black;" id="mode-pills">
+                        <div class="btn-group btn-group-sm">
+                            <span class="btn btn-primary mode-pill active" data-value="rgb"
+                                onclick="selectCompVideo(activeMethodPill, activeScenePill, null, this)">
+                                RGB
+                            </span>
+                            <span class="btn btn-primary mode-pill" data-value="depth"
+                                onclick="selectCompVideo(activeMethodPill, activeScenePill, null, this)">
+                                Depth
+                            </span>
+                        </div>
+                    </div> -->
+
+
+                    <br>
+                    <p class="text-justify" style="text-align: center;">
+                        Ours (left) vs BARF (right). Try selecting different scenes!
+                    </p>
+                    <script>
+                        video0 = document.getElementById("compVideo0");
+                        video1 = document.getElementById("compVideo1");
+                        video0.addEventListener('loadedmetadata', function() {
+                            if (activeVidID == 0 && select){
+                                video0.play();
+                                // print video size
+                                console.log(video0.videoWidth, video0.videoHeight);
+                                video0.hidden = false;
+                                video1.hidden = true;
+                            }
+                        });
+                        video1.addEventListener('loadedmetadata', function() {
+                            if (activeVidID == 1 && select){
+                                video1.play();
+                                // print video size
+                                console.log(video1.videoWidth, video1.videoHeight);
+                                video0.hidden = true;
+                                video1.hidden = false;
+                            }
+                        });
+                    </script>
+
+                    <div class="pill-row scene-pills" id="scene-pills">
+                        <span class="pill scene-pill" data-value="blender_ficus" onclick="selectCompVideo(activeMethodPill, this, 3)">
+                            <img class="thumbnail-img" src="thumbnails/blender_ficus_thumbnail.jpg" alt="Blender/Ficus" width="64">
+                        </span>
+                        <span class="pill scene-pill" data-value="blender_lego" onclick="selectCompVideo(activeMethodPill, this, 3)">
+                            <img class="thumbnail-img" src="thumbnails/blender_lego_thumbnail.jpg" alt="Blender/Lego" width="64">
+                        </span>
+                        <span class="pill scene-pill active" data-value="llff_fern" onclick="selectCompVideo(activeMethodPill, this, 3)">
+                            <img class="thumbnail-img" src="thumbnails/llff_fern_thumbnail.jpg" alt="LLFF/fern" width="64">
+                        </span>
+                        <span class="pill scene-pill" data-value="llff_trex" onclick="selectCompVideo(activeMethodPill, this, 3)">
+                            <img class="thumbnail-img" src="thumbnails/llff_trex_thumbnail.jpg" alt="LLFF/horns" width="64">
+                        </span>
+                    </div>
+
+                    <script>
+                        // activeMethodPill = document.querySelector('.method-pill.active-pill');
+                        activeScenePill = document.querySelector('.scene-pill.active-pill');
+                        // activeModePill = document.querySelector('.mode-pill.active-pill');
+                    </script>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+
+
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    PSNR and training iterations comparison
+				  <!-- <b> <font color="#118ab2">Recon</font><font color="#ef486e">Fusion</font></b> = <font color="#118ab2">3D Reconstruction</font>  + <font color="#ef486e">Diffusion Prior</font> -->
+                </h3>
+                <image src="img/TimeCompare.jpg" width=50% style="display: block; margin: auto;"></image>
+            </div>
+        </div><br><br>
+
+        
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Citation
+                </h3>
+                <div class="form-group col-md-10 col-md-offset-1">
+				  <p class="text-justify">
+                    <textarea id="bibtex" class="form-control" readonly>
+@inproceedings{wu2023reconfusion,
+    title={Improving Robustness for Joint Optimization of Camera Poses and Decomposed Low-Rank Tensorial Radiance Fields},
+    author={Bo-Yu Cheng and Wei-Chen Chiu and Yu-Lun Liu},
+    booktitle={AAAI},
+    year={2024}
+	}</textarea></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Acknowledgements
+                </h3>
+                <p class="text-justify">
+                    This work is supported by National Science and Technology Council (NSTC) 111-2628-E-A49-018-MY4, 112-2221-E-A49-087-MY3, 112-2222-E-A49-004-MY2, and Higher Education Sprout Project of the National Yang Ming Chiao Tung University, as well as the Ministry of Education (MoE), Taiwan. In particular, Yu-Lun Liu acknowledges the Yushan Young Fellow Program by the MoE in Taiwan. 
+                    <br><br>
+                The website template was borrowed from <a href="http://mgharbi.com/">Michaël Gharbi</a> and <a href="https://dorverbin.github.io/refnerf">Ref-NeRF</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
