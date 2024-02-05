@@ -62,7 +62,7 @@ function selectCompVideo(methodPill, scenePill, n_views, modePill) {
     video_active.src = "videos/" + pill + "_Demo_Compressed.mp4";
     video_active.load();
 
-    if (n_views) {
-        viewNum.innerHTML = n_views;
-    }
+    // if (n_views) {
+    //     viewNum.innerHTML = n_views;
+    // }
 }
